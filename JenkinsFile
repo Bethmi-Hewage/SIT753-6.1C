@@ -1,0 +1,46 @@
+pipeline{
+    agent any
+
+    // defining envrionment variables
+    environment {
+        DIRECTORY_PATH = "C:/Users/Bethmi Hewage/Desktop/Deakin/T2-2024/SIT753/5.1P"
+        TESTING_ENVIRONMENT = "Test Environment 1"
+        PRODUCTION_ENVIRONMENT = "Bethmi's Production Environment"
+    }
+
+    stages{
+        stage('Build'){
+            steps{
+                echo "Fetching the source code from ${env.DIRECTORY_PATH}"
+                echo "Compile the code and generate any necessary artifacts"
+            }
+        }
+        stage('Test'){
+            steps{
+                echo "Running Unit Tests"
+                echo "Running Integration Tests"
+            }
+        }
+        stage('Code Quality Check'){
+            steps{
+                echo "Check the quality of the code"
+            }
+        }
+        stage('Deploy'){
+            steps{
+                echo "Deploy the application to ${env.TESTING_ENVIRONMENT}"
+            }
+        }
+        stage('Approval'){
+            steps{
+                echo "Simulate manual approval"
+                sleep(time: 10, unit: 'SECONDS')
+            }
+        }
+        stage('Deploy to Production'){
+            steps{
+                echo "Deploying to the production environment ${env.PRODUCTION_ENVIRONMENT}"
+            }
+        }
+    }
+}
