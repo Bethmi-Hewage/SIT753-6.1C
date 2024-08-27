@@ -6,6 +6,7 @@ pipeline{
         DIRECTORY_PATH = "C:/Users/Bethmi Hewage/Desktop/Deakin/T2-2024/SIT753/5.1P"
         TESTING_ENVIRONMENT = "Test Environment 1"
         PRODUCTION_ENVIRONMENT = "Bethmi's Production Environment"
+        EMAIL_RECIPIENT = "bethmi.k98@gmail.com"
     }
 
     stages{
@@ -14,6 +15,32 @@ pipeline{
                 echo "Fetching the source code from ${env.DIRECTORY_PATH}"
                 echo "Compile and package the code."
                 echo "Tool: Maven"
+            }
+            post{
+                success {
+                    script{
+                        def logContent = currentBuild.rawBuild.getLog(100)
+                        writeFile file: 'build-stage-log.txt', text:logContent.join('\n')
+                    }
+                    emailext(
+                        to: "${env.EMAIL_RECIPIENT}",
+                        subject: "Build Status",
+                        body: "Build was successful",
+                        attachmentsPattern: "build-stage-log.txt"
+                    )
+                }
+                failure{
+                    script{
+                        def logContent = currentBuild.rawBuild.getLog(100)
+                        writeFile file: 'build-stage-log.txt', text:logContent.join('\n')
+                    }
+                    emailext(
+                        to: "${env.EMAIL_RECIPIENT}",
+                        subject: "Build Status",
+                        body: "Build was a failure",
+                        attachmentsPattern: "build-stage-log.txt"
+                    )
+                }
             }
         }
         stage('Unit and Integration Tests'){
