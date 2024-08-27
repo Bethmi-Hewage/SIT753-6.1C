@@ -12,34 +12,44 @@ pipeline{
         stage('Build'){
             steps{
                 echo "Fetching the source code from ${env.DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artifacts"
+                echo "Compile and package the code."
+                echo "Tool: Maven"
             }
         }
-        stage('Test'){
+        stage('Unit and Integration Tests'){
             steps{
-                echo "Running Unit Tests"
-                echo "Running Integration Tests"
+                echo "Run unit and integration tests to ensure code functionality."
+                echo "Tool: JUnit, Maven"
             }
         }
-        stage('Code Quality Check'){
+        stage('Code Analysis'){
             steps{
-                echo "Check the quality of the code"
+                echo "Analyze code to ensure it meets industry standards."
+                echo "Tool: SonarQube"
             }
         }
-        stage('Deploy'){
+        stage('Security Scan'){
             steps{
-                echo "Deploy the application to ${env.TESTING_ENVIRONMENT}"
+                echo "Perform a security scan to identify vulnerabilities"
+                echo "Tool: OWASP Dependency Check"
             }
         }
-        stage('Approval'){
+        stage('Deploy to Staging'){
             steps{
-                echo "Simulate manual approval"
-                sleep(time: 10, unit: 'SECONDS')
+                echo "Deploy the application to a staging server"
+                echo "Tool: AWS"
+            }
+        }
+        stage('Integration Tests on Staging'){
+            steps{
+                echo "Run integration tests in the staging enviornment"
+                echo "Tool: Selenium, Postman"
             }
         }
         stage('Deploy to Production'){
             steps{
-                echo "Deploying to the production environment ${env.PRODUCTION_ENVIRONMENT}"
+                echo "Deploy the application to ${env.PRODUCTION_ENVIRONMENT}"
+                echo "Tool: Selenium, Postman"
             }
         }
     }
