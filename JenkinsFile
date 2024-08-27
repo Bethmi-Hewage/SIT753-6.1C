@@ -20,23 +20,29 @@ pipeline{
             post{
                 success {
                     archiveArtifacts artifacts: 'build.log', fingerprint: true
-                    emailext(
-                        to: "${env.EMAIL_RECIPIENT}",
-                        subject: "Build Status",
-                        body: "Build was successful",
-                        attachmentsPattern: "build.log",
-                        mimeType: 'text/plain'
-                    )
+                    // emailext(
+                    //     to: "${env.EMAIL_RECIPIENT}",
+                    //     subject: "Build Status",
+                    //     body: "Build was successful",
+                    //     attachmentsPattern: "build.log",
+                    //     mimeType: 'text/plain'
+                    // )
+                    mail to: "${env.EMAIL_RECIPIENT}",
+                    subject: "Build Status",
+                    body: "Build was Successful"
                 }
                 failure{
                     archiveArtifacts artifacts: 'build.log', fingerprint: true
-                     emailext(
-                        to: "${env.EMAIL_RECIPIENT}",
-                        subject: "Build Status",
-                        body: "Build was a failure",
-                        attachmentsPattern: "build.log",
-                        mimeType: 'text/plain'
-                    )
+                    // emailext(
+                    //     to: "${env.EMAIL_RECIPIENT}",
+                    //     subject: "Build Status",
+                    //     body: "Build was a failure",
+                    //     attachmentsPattern: "build.log",
+                    //     mimeType: 'text/plain'
+                    // )
+                    mail to: "${env.EMAIL_RECIPIENT}",
+                    subject: "Build Status",
+                    body: "Build was Failure"
                 }
             }
         }
