@@ -15,32 +15,27 @@ pipeline{
                 echo "Fetching the source code from ${env.DIRECTORY_PATH}"
                 echo "Compile and package the code."
                 echo "Tool: Maven"
+                bat 'echo "Build log" > build.log' // save the build log
             }
             post{
                 success {
-                    script{
-                        sh 'echo "Build log" > build.log'  // save the build log to a file
-                        archiveArtifacts artifacts: 'build.log', fingerprint: true
-                    }
+                    archiveArtifacts artifacts: 'build.log', fingerprint: true
                     emailext(
                         to: "${env.EMAIL_RECIPIENT}",
                         subject: "Build Status",
                         body: "Build was successful",
-                        attachmentsPattern: "88/build.log",
-                        mimeType: 'text/plan'
+                        attachmentsPattern: "build.log",
+                        mimeType: 'text/plain'
                     )
                 }
                 failure{
-                    script{
-                        sh 'echo "Build log" > build.log'  // save the build log to a file
-                        archiveArtifacts artifacts: 'build.log', fingerprint: true
-                    }
+                    archiveArtifacts artifacts: 'build.log', fingerprint: true
                     emailext(
                         to: "${env.EMAIL_RECIPIENT}",
                         subject: "Build Status",
                         body: "Build was a failure",
-                        attachmentsPattern: "88/build.log",
-                        mimeType: 'text/plan'
+                        attachmentsPattern: "build.log",
+                        mimeType: 'text/plain'
                     )
                 }
             }
