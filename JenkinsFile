@@ -19,26 +19,28 @@ pipeline{
             post{
                 success {
                     script{
-                        def logContent = currentBuild.rawBuild.getLog(100)
-                        writeFile file: 'build-stage-log.txt', text:logContent.join('\n')
+                        sh 'echo "Build log" > build.log'  // save the build log to a file
+                        archiveArtifacts artifacts: 'build.log', fingerprint: true
                     }
                     emailext(
                         to: "${env.EMAIL_RECIPIENT}",
                         subject: "Build Status",
                         body: "Build was successful",
-                        attachmentsPattern: "build-stage-log.txt"
+                        attachmentsPattern: "88/build.log",
+                        mimeType: 'text/plan'
                     )
                 }
                 failure{
                     script{
-                        def logContent = currentBuild.rawBuild.getLog(100)
-                        writeFile file: 'build-stage-log.txt', text:logContent.join('\n')
+                        sh 'echo "Build log" > build.log'  // save the build log to a file
+                        archiveArtifacts artifacts: 'build.log', fingerprint: true
                     }
                     emailext(
                         to: "${env.EMAIL_RECIPIENT}",
                         subject: "Build Status",
                         body: "Build was a failure",
-                        attachmentsPattern: "build-stage-log.txt"
+                        attachmentsPattern: "88/build.log",
+                        mimeType: 'text/plan'
                     )
                 }
             }
