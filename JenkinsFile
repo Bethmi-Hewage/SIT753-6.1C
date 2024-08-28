@@ -6,7 +6,6 @@ pipeline{
         DIRECTORY_PATH = "C:/Users/Bethmi Hewage/Desktop/Deakin/T2-2024/SIT753/5.1P"
         TESTING_ENVIRONMENT = "Test Environment 1"
         PRODUCTION_ENVIRONMENT = "Bethmi's Production Environment"
-        EMAIL_RECIPIENT = "bethmi.k98@gmail.com"
     }
 
     stages{
@@ -15,36 +14,7 @@ pipeline{
                 echo "Fetching the source code from ${env.DIRECTORY_PATH}"
                 echo "Compile and package the code."
                 echo "Tool: Maven"
-                // bat 'echo "Build log" > build.log' // save the build log
             }
-            // post{
-            //     success {
-            //         archiveArtifacts artifacts: 'build.log', fingerprint: true
-            //         // emailext(
-            //         //     to: "${env.EMAIL_RECIPIENT}",
-            //         //     subject: "Build Status",
-            //         //     body: "Build was successful",
-            //         //     attachmentsPattern: "build.log",
-            //         //     mimeType: 'text/plain'
-            //         // )
-            //         mail to: "${env.EMAIL_RECIPIENT}",
-            //         subject: "Build Status",
-            //         body: "Build was Successful"
-            //     }
-            //     failure{
-            //         archiveArtifacts artifacts: 'build.log', fingerprint: true
-            //         emailext(
-            //             to: "${env.EMAIL_RECIPIENT}",
-            //             subject: "Build Status",
-            //             body: "Build was a failure",
-            //             attachmentsPattern: "build.log",
-            //             mimeType: 'text/plain'
-            //         )
-            //         // mail to: "${env.EMAIL_RECIPIENT}",
-            //         // subject: "Build Status",
-            //         // body: "Build was Failure"
-            //     }
-            // }
         }
         stage('Unit and Integration Tests'){
             steps{
@@ -85,14 +55,14 @@ pipeline{
     }
     post{
         success {
-            // Send a success notification email with logs as attachments
+            // send a success notification email with logs as attachments
             emailext subject: 'Build Status',
                 body: 'The Jenkins pipeline has succeeded.',
                 attachLog: true,
                 to: 'bethmi.k98@gmail.com'
         }
         failure {
-            // Send a failure notification email with logs as attachments
+            // send a failure notification email with logs as attachments
             emailext subject: 'Build Status',
                 body: 'The Jenkins pipeline has failed. Please check the logs for details.',
                 attachLog: true,
